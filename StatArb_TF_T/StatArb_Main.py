@@ -52,7 +52,7 @@ flag_gp_cl = 'None'     ##止盈止损状态   高位/低位 止盈止损
 # 第四步：计算实时上下阈值 (需要实时刷新)
 ##ASP框架定时任务 @Hurson
 
-benchmark = 1.65*array(w_TF1606.Data[0]-w_T1606.Data[0])
+benchmark = 1.95*array(w_TF1606.Data[0]-w_T1606.Data[0])
 uplimit_series = Normal.unNormal_Zscore_Method(benchmark,window_size,top)
 botlimit_series = Normal.unNormal_Zscore_Method(benchmark,window_size,bot)
 uplimit_rtd = uplimit_series[len(uplimit_series)-1]
