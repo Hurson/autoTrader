@@ -6,6 +6,8 @@ from Tkinter import *
 from tkMessageBox import *
 from UtilCode import common as c
 from UtilCode import Util as u
+from UtilCode import Normal
+from numpy import *
 
 
 ##初始化合约历史价格情况
@@ -28,4 +30,13 @@ def initStrategy(loginId):
     TPsition = u.queryPosition(loginId,"T1606")
     TFPsiton = u.queryPosition(loginId,"TF1606")
     return [TPsition,TFPsiton]
+
+##计算实时上下阈值
+def threshold(w_TF1606,w_T1606):
+    benchmark = c.BETA*array(w_TF1606.Data[0]-w_T1606.Data[0])
+    uplimit_series = Normal.unNormal_Zscore_Method(benchmark,c.WINDOW_SIZE,c.TOP)
+    botlimit_series = Normal.unNormal_Zscore_Method(benchmark,c.WINDOW_SIZE,c.BOT)
+    uplimit_rtd = uplimit_series[len(uplimit_series)-1]
+    botlimit_rtd = botlimit_series[len(botlimit_series)-1]
+    return [uplimit_rtd,botlimit_rtd]
 

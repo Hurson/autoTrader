@@ -1,9 +1,12 @@
 # coding:utf-8
+
+from numpy import *
 from WindPy import *
 from Tkinter import *
 from tkMessageBox import *
 from UtilCode import Util as u
 from UtilCode import common as c
+from UtilCode import Normal
 import service
 
 
@@ -46,6 +49,25 @@ rtd_benchmark = HisInfo[3]
 
 
 # 第三步：初始化策略交易位置：从交易账户中提取如下信息：1.当前仓位，2.当时开仓平均成本，3.直接判断目前开仓是否有才操作指令要求。
-[TPsition,TFPsiton]
 StrInfo = service.initStrategy(loginID)
 TPsition = StrInfo[0]
+TFPsiton = StrInfo[1]
+
+# 第四步：计算实时上下阈值 (需要实时刷新)
+ths = service.threshold(w_TF1606,w_T1606)
+unRealized_PnL_rtd = (TPsition[3]-TPsition[0])*TPsition[2]*TPsition[1] #根据开仓成本和仓位计算实时浮动损益\
+
+
+
+# 第五步：判断策略操作（需要实时不断判断）
+# 判断止盈止损区间
+if 0.7*(ths[0]-ths[1])<=0.1:
+    cl = -0.7*(ths[0]-ths[1])
+    gp = 0.7*(ths[0]-ths[1])
+else:
+    cl = c.CUT_LOST
+    gp = c.GAIN_PROFIT
+
+    # 判断策略操作点：
+    # 向下做价差平+开仓：
+

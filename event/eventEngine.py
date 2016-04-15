@@ -198,7 +198,6 @@ def test():
     
     ee = EventEngine2()
     ee.register(EVENT_TIMER, simpletest)
-    ee.register(EVENT_TIMER2, simpletest2)
     ee.start()
     sleep(10)
     ee.unregister(EVENT_TIMER,simpletest)
